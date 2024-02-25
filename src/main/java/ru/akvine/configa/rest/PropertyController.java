@@ -6,6 +6,7 @@ import ru.akvine.configa.rest.converters.PropertyConverter;
 import ru.akvine.configa.rest.dto.common.Response;
 import ru.akvine.configa.rest.dto.common.SuccessfulResponse;
 import ru.akvine.configa.rest.dto.property.AddPropertiesRequest;
+import ru.akvine.configa.rest.dto.property.ImportPropertiesRequest;
 import ru.akvine.configa.rest.dto.property.ListPropertiesRequest;
 import ru.akvine.configa.rest.meta.PropertyControllerMeta;
 import ru.akvine.configa.services.PropertyService;
@@ -32,5 +33,10 @@ public class PropertyController implements PropertyControllerMeta {
         AddProperties addProperties = propertyConverter.convertToAddProperties(request);
         propertyService.add(addProperties);
         return new SuccessfulResponse();
+    }
+
+    @Override
+    public Response importProperties(@Valid ImportPropertiesRequest request) {
+        return null;
     }
 }
