@@ -15,4 +15,12 @@ public final class CommonErrorCodes {
     interface App {
         String APP_NOT_FOUND_ERROR = "app.notFound.error";
     }
+
+    public interface Validation {
+        interface Property {
+            String PROPERTY_FILE_TYPE_BLANK_ERROR = "property.file.type.blank.error";
+            String PROPERTY_FILE_TYPE_INVALID_ERROR = "property.file.type.invalid.error";
+            String PROPERTY_FILE_SIZE_ERROR = "property.file.size.error";
+        }
+    }
 }

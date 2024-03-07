@@ -10,6 +10,7 @@ import ru.akvine.configa.rest.dto.common.SuccessfulResponse;
 import ru.akvine.configa.rest.dto.property.AddPropertiesRequest;
 import ru.akvine.configa.rest.dto.property.ListPropertiesRequest;
 import ru.akvine.configa.rest.meta.PropertyControllerMeta;
+import ru.akvine.configa.rest.validators.PropertyValidator;
 import ru.akvine.configa.services.property.PropertyService;
 import ru.akvine.configa.services.dto.property.AddProperties;
 import ru.akvine.configa.services.dto.property.PropertyBean;
@@ -22,6 +23,7 @@ import java.util.List;
 public class PropertyController implements PropertyControllerMeta {
     private final PropertyService propertyService;
     private final PropertyConverter propertyConverter;
+    private final PropertyValidator propertyValidator;
 
     @Override
     public Response list(@Valid ListPropertiesRequest request) {
@@ -40,8 +42,8 @@ public class PropertyController implements PropertyControllerMeta {
     public Response importProperties(String appUuid,
                                      String fileType,
                                      MultipartFile propertiesFile) {
-        PropertyFileType type = PropertyFileType.PROPERTIES;
-        AddProperties addProperties = propertyConverter.convertToAddProperties(appUuid, type, propertiesFile);
+        propertyValidator.verifyImportProperties(fileType, propertiesFile);
+        AddProperties addProperties = propertyConverter.convertToAddProperties(appUuid, fileType, propertiesFile);
         propertyService.add(addProperties);
         return new SuccessfulResponse();
     }

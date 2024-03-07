@@ -37,17 +37,18 @@ public class PropertyConverter {
     }
 
     public AddProperties convertToAddProperties(String appUuid,
-                                                PropertyFileType type,
+                                                String type,
                                                 MultipartFile file) {
         Preconditions.checkNotNull(appUuid, "appUuid is null");
         Preconditions.checkNotNull(type, "propertyFileType is null");
         Preconditions.checkNotNull(file, "file is null");
 
+        PropertyFileType propertyFileType = PropertyFileType.valueOf(type);
         return new AddProperties()
                 .setAppUuid(appUuid)
                 .setProperties(propertyParseManager
                         .getPropertyFileParsers()
-                        .get(type)
+                        .get(propertyFileType)
                         .parse(appUuid, file));
     }
 
