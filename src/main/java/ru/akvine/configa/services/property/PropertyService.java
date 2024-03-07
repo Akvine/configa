@@ -1,4 +1,4 @@
-package ru.akvine.configa.services;
+package ru.akvine.configa.services.property;
 
 import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.akvine.configa.entities.AppEntity;
 import ru.akvine.configa.entities.PropertyEntity;
 import ru.akvine.configa.repositories.PropertyRepository;
+import ru.akvine.configa.services.AppService;
 import ru.akvine.configa.services.dto.property.AddProperties;
 import ru.akvine.configa.services.dto.property.PropertyBean;
 

@@ -2,14 +2,15 @@ package ru.akvine.configa.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import ru.akvine.configa.enums.PropertyFileType;
 import ru.akvine.configa.rest.converters.PropertyConverter;
 import ru.akvine.configa.rest.dto.common.Response;
 import ru.akvine.configa.rest.dto.common.SuccessfulResponse;
 import ru.akvine.configa.rest.dto.property.AddPropertiesRequest;
-import ru.akvine.configa.rest.dto.property.ImportPropertiesRequest;
 import ru.akvine.configa.rest.dto.property.ListPropertiesRequest;
 import ru.akvine.configa.rest.meta.PropertyControllerMeta;
-import ru.akvine.configa.services.PropertyService;
+import ru.akvine.configa.services.property.PropertyService;
 import ru.akvine.configa.services.dto.property.AddProperties;
 import ru.akvine.configa.services.dto.property.PropertyBean;
 
@@ -36,7 +37,12 @@ public class PropertyController implements PropertyControllerMeta {
     }
 
     @Override
-    public Response importProperties(@Valid ImportPropertiesRequest request) {
-        return null;
+    public Response importProperties(String appUuid,
+                                     String fileType,
+                                     MultipartFile propertiesFile) {
+        PropertyFileType type = PropertyFileType.PROPERTIES;
+        AddProperties addProperties = propertyConverter.convertToAddProperties(appUuid, type, propertiesFile);
+        propertyService.add(addProperties);
+        return new SuccessfulResponse();
     }
 }

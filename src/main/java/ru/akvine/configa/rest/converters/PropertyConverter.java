@@ -1,7 +1,11 @@
 package ru.akvine.configa.rest.converters;
 
 import com.google.common.base.Preconditions;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import ru.akvine.configa.enums.PropertyFileType;
+import ru.akvine.configa.managers.PropertyParseManager;
 import ru.akvine.configa.rest.dto.property.AddPropertiesRequest;
 import ru.akvine.configa.rest.dto.property.ListPropertiesResponse;
 import ru.akvine.configa.rest.dto.property.PropertyDto;
@@ -12,7 +16,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class PropertyConverter {
+    private final PropertyParseManager propertyParseManager;
+
     public AddProperties convertToAddProperties(AddPropertiesRequest request) {
         Preconditions.checkNotNull(request, "addPropertiesRequest is null");
         return new AddProperties()
@@ -27,6 +34,21 @@ public class PropertyConverter {
         return new ListPropertiesResponse()
                 .setAppUuid(appUuid)
                 .setProperties(buildPropertyDtos(propertyBeans));
+    }
+
+    public AddProperties convertToAddProperties(String appUuid,
+                                                PropertyFileType type,
+                                                MultipartFile file) {
+        Preconditions.checkNotNull(appUuid, "appUuid is null");
+        Preconditions.checkNotNull(type, "propertyFileType is null");
+        Preconditions.checkNotNull(file, "file is null");
+
+        return new AddProperties()
+                .setAppUuid(appUuid)
+                .setProperties(propertyParseManager
+                        .getPropertyFileParsers()
+                        .get(type)
+                        .parse(appUuid, file));
     }
 
     private List<PropertyDto> buildPropertyDtos(List<PropertyBean> propertyBeans) {
